@@ -1,0 +1,11 @@
+{
+  "name": "rubah",
+  "version": "1.0.0",
+  "description": "Template preprocessor module for avermodule",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Averman",
+  "license": "GPL-3.0"
+}
