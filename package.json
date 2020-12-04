@@ -2,10 +2,50 @@
   "name": "rubah",
   "version": "1.0.0",
   "description": "Template preprocessor module for avermodule",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "cov": "nyc mocha",
+    "start": "node -r ts-node/register src/index.ts",
+    "reconfigure": "node -r ts-node/register src/module-utils/reconfigure.ts",
+    "build:ts.d": "tsc -d --project tsconfig.build.json --emitDeclarationOnly",
+    "build:ts": "tsc --project tsconfig.build.json",
+    "build": "rm -rf build && mkdir build && npm run build:ts && npm run build:ts.d",
+    "postinstall": "node -r ts-node/register src/module-utils/postinstall.ts && node -r ts-node/register src/module-utils/reconfigure.ts"
   },
   "author": "Averman",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "averModule": {
+    "tsemplate": {
+      "reconfigure": "tsemplate reconfigure",
+      "priority": 0,
+      "mode": "module"
+    }
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.0.3",
+    "mocha": "^8.0.3",
+    "nyc": "^15.1.0"
+  },
+  "nyc": {
+    "require": [
+      "ts-node/register"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "excludeNodeModules": true,
+    "instrument": true,
+    "sourceMap": true,
+    "produce-source-map": true
+  },
+  "dependencies": {
+    "tsemplate": "git+https://github.com/Averism/tsemplate.git#module/v1"
+  },
+  "bin": "build/index.js",
+  "types": "build/index.d.js"
 }
