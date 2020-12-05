@@ -7,6 +7,13 @@ Template preprocessor module for avermodule
 <!--#!generated-line readme-ver DO NOT EDIT-->
 0.1.0
 <!--#!---readme-ver-->
+
+---
+
+lorem ipsum dolor sit amet
+
+---
+
 <!--#!generated-line readme-copyright DO NOT EDIT-->
 ### rubah -- Template preprocessor module for avermodule
 
