@@ -16,8 +16,8 @@ const commentStyleParser: {[key: string]: (body: string, type: string)=>string|s
         if(type == "HEAD") return "//!"+body;
         else if (type == "TAIL") return "//---";
         else if (body.startsWith("//")) {
-            if(body.startsWith("//!")) return ["HEAD",body.substr(3)];
-            else if(body.startsWith("//---")) return ["TAIL",body.substr(5)];
+            if(body.startsWith("//!")) return ["HEAD",body.substr(3).trim()];
+            else if(body.startsWith("//---")) return ["TAIL",body.substr(5).trim()];
             else return null;
         } else return null;
     },
@@ -27,16 +27,40 @@ const commentStyleParser: {[key: string]: (body: string, type: string)=>string|s
         else if (body.startsWith("<!--")) {
             if(body.startsWith("<!--#!")){
                 let i = body.indexOf("-->");
-                return ["HEAD",body.substr(6,i-6)];
+                return ["HEAD",body.substr(6,i-6).trim()];
             }
             else if(body.startsWith("<!--#!---")){
                 let i = body.indexOf("-->");
-                return ["TAIL",body.substr(9,i-9)];
+                return ["TAIL",body.substr(9,i-9).trim()];
             }
             else return null;
         } else return null;
     },
 };
+
+function parsecommand(command: string, jobname: string): 
+    {mapkey: string, template: string}
+{
+    let parts = command.split(' ');
+    let mapkey = jobname + "-" + parts[1];
+    let template = parts[2];
+    return {mapkey, template};
+}
+
+function generateBody(job: RubahJobs, multi: boolean, mapkey: string, template: string, commentStyle: string, left: string): string[]{
+    let rawbody = `generated-line${multi?'-multi':''} ${mapkey} DO NOT EDIT`;
+    let body : string[] = [commentStyleParser[commentStyle](rawbody,"HEAD") as string];
+    let {handle, params} = templateParser(template);
+    if(job.rubah.helpers[handle]){
+        let p: any[][];
+        if(multi) p = job.rubah.iterate(params);
+        else p = [params.map((x:any)=>job.rubah.data[x] || x)];
+        body = body.concat( p.map(x=>job.rubah.helpers[handle](...x) ).reduce((p,c)=>p.concat(c),[]) );
+    }else throw `unknown helper ${handle} with params ${params}`;
+    body.push(commentStyleParser[commentStyle](mapkey,"TAIL") as string);
+    body = body.map(x=>left+x);
+    return body;
+}
 
 export async function line_write (job: RubahJobs, params: string[]): Promise<{ key: string; value: any; }[]> {
     let nl = job.newline?job.newline:job.rubah.config.newline?job.rubah.config.newline:"\n";
@@ -53,27 +77,18 @@ export async function line_write (job: RubahJobs, params: string[]): Promise<{ k
             let multi = false;
             if(parsed[1].startsWith('line-writer-multi'))
                 multi = true;
-            let parts = parsed[1].split(' ');
-            let mapkey = job.name + "-" + parts[1];
-            let template = parts[2];
-            job.rubah.state[mapkey] = line.trim();
-            let {handle, params} = templateParser(template);
-            let rawbody = `rubah-generated${multi?'-multi':''} ${mapkey} DO NOT EDIT`;
-            let body : string[] = [commentStyleParser[commentStyle](rawbody,"HEAD") as string];
-            if(job.rubah.helpers[handle]){
-                let p: any[][];
-                if(multi) p = job.rubah.iterate(params);
-                else p = [params.map((x:any)=>job.rubah.data[x] || x)];
-                body = body.concat( p.map(x=>job.rubah.helpers[handle](...x) ).reduce((p,c)=>p.concat(c),[]) );
-            }else throw `unknown helper ${handle} with params ${params}`
-            body.push(commentStyleParser[commentStyle](mapkey,"TAIL") as string);
-            body = body.map(x=>left+x);
+            let {mapkey, template} = parsecommand(parsed[1], job.name);
+            job.rubah.state[mapkey] = template;
+            let body : string[] = generateBody(job,multi,mapkey,template,commentStyle,left)
             res = res.concat(body);
-        } else if(parsed && parsed[0] == "HEAD" && parsed[1].startsWith('rubah-generated')){
+        } else if(parsed && parsed[0] == "HEAD" && parsed[1].startsWith('generated-line')){
             let multi = false;
-            if(parsed[1].startsWith('rubah-generated-multi'))
+            if(parsed[1].startsWith('generated-line-multi'))
                 multi = true;
-            let mapkey = line.trim().split(' ')[1];
+            let mapkey = parsed[1].split(' ')[1];
+            let template = job.rubah.state[mapkey];
+            let body : string[] = generateBody(job,multi,mapkey,template,commentStyle,left)
+            res = res.concat(body);
             mode = mapkey;
         } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1]==mode) {
             mode = null;
