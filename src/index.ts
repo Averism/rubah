@@ -1,8 +1,15 @@
 #!/usr/bin/env node
+import { RubahOptions } from "./models/RubahOptions";
+import Rubah from "./Rubah";
+import fs from 'fs'
 
-export default function main(mode: string):number{
+export default async function main(mode: string):Promise<number>{
+    let config: RubahOptions = new RubahOptions();
+    config = Object.assign(config, JSON.parse(fs.readFileSync("rubahconfig.json").toString()));
+    let rubah = new Rubah(config);
     switch(mode){
-        //your command line parsing logic here
+        case 'generate': await rubah.generate(); break;
+        case 'revert': await rubah.revert(); break;
         case 'reconfigure': require('./module-utils/reconfigure'); break;
         default: console.error("[tsemplate error] UNKNOWN MODE:",mode)
     }

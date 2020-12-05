@@ -1,0 +1,19 @@
+{
+    "jobs": [
+        {
+            "name": "package",
+            "command": "load_json",
+            "location": "package.json"
+        },
+        {
+            "name": "readme",
+            "command": "line_write",
+            "location": "readme.md",
+            "commentStyle": "html"
+        }
+    ],
+
+    "mappingfile": "rubahmapping.json",
+    "helpers": ["src/helpers/common","src/helpers/markdown"],
+    "commands": ["src/commands/load_json","src/commands/line_write"]
+}

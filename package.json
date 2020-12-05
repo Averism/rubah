@@ -25,7 +25,8 @@
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "mocha": "^8.0.3",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "tsemplate": "git+https://github.com/Averism/tsemplate.git#module/v1"
   },
   "nyc": {
     "require": [
@@ -42,9 +43,6 @@
     "instrument": true,
     "sourceMap": true,
     "produce-source-map": true
-  },
-  "dependencies": {
-    "tsemplate": "git+https://github.com/Averism/tsemplate.git#module/v1"
   },
   "bin": "build/index.js",
   "types": "build/index.d.js"
