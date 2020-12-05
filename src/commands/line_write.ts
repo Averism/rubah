@@ -90,7 +90,7 @@ export async function line_write (job: RubahJobs, params: string[]): Promise<{ k
             let body : string[] = generateBody(job,multi,mapkey,template,commentStyle,left)
             res = res.concat(body);
             mode = mapkey;
-        } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1].split(' ')[1].trim()==mode) {
+        } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1].trim()==mode) {
             mode = null;
         } else if (mode==null) {
             res.push(line);
