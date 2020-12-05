@@ -26,12 +26,12 @@ const commentStyleParser: {[key: string]: (body: string, type: string)=>string|s
         else if (type == "TAIL") return "<!--#!---"+body+"-->";
         else if (body.startsWith("<!--")) {
             if(body.startsWith("<!--#!")){
+                if(body.startsWith("<!--#!---")){
+                    let i = body.indexOf("-->");
+                    return ["TAIL",body.substr(9,i-9).trim()];
+                }
                 let i = body.indexOf("-->");
                 return ["HEAD",body.substr(6,i-6).trim()];
-            }
-            else if(body.startsWith("<!--#!---")){
-                let i = body.indexOf("-->");
-                return ["TAIL",body.substr(9,i-9).trim()];
             }
             else return null;
         } else return null;
