@@ -1,6 +1,6 @@
 {
   "name": "rubah",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Template preprocessor module for avermodule",
   "main": "build/index.js",
   "scripts": {

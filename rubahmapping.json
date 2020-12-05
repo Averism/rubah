@@ -1,6 +1,6 @@
 {
-  "readme-title": "<!--#!line-writer title mdselect(h1,package,name)-->",
-  "readme-desc": "<!--#!line-writer desc select(package,description)-->",
-  "readme-ver": "<!--#!line-writer ver select(package,version)-->",
-  "readme-copyright": "<!--#!line-writer copyright mdcopyright(package,2020)-->"
+  "readme-title": "mdselect(h1,package,name)",
+  "readme-desc": "select(package,description)",
+  "readme-ver": "select(package,version)",
+  "readme-copyright": "mdcopyright(package,2020)"
 }
