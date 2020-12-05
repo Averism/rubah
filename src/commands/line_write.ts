@@ -85,12 +85,12 @@ export async function line_write (job: RubahJobs, params: string[]): Promise<{ k
             let multi = false;
             if(parsed[1].startsWith('generated-line-multi'))
                 multi = true;
-            let mapkey = parsed[1].split(' ')[1];
+            let mapkey = parsed[1].split(' ')[1].trim();
             let template = job.rubah.state[mapkey];
             let body : string[] = generateBody(job,multi,mapkey,template,commentStyle,left)
             res = res.concat(body);
             mode = mapkey;
-        } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1]==mode) {
+        } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1].split(' ')[1].trim()==mode) {
             mode = null;
         } else if (mode==null) {
             res.push(line);
