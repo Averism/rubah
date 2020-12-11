@@ -1,51 +1,9 @@
 import path from "path";
 import fs from 'fs';
 import { RubahJobs } from "../models/RubahJobs";
-
-const templateRegex = /^(\w+)\((\w*(\s*,\s*\w*)*)\)$/;
-function templateParser(template: string): {handle: string, params: string[]} {
-    let temp = templateRegex.exec(template);
-    if(temp[1]){
-        return {handle: temp[1], params: temp[2].split(',').map(x=>x.trim())};
-    } else throw `cannot parse ${template}`
-}
-
-type commentType = "HEAD" | "TAIL" | "PARSE";
-const commentStyleParser: {[key: string]: (body: string, type: string)=>string|string[]} = {
-    "doubleslash": (body: string, type: string):string|string[] => {
-        if(type == "HEAD") return "//!"+body;
-        else if (type == "TAIL") return "//---";
-        else if (body.startsWith("//")) {
-            if(body.startsWith("//!")) return ["HEAD",body.substr(3).trim()];
-            else if(body.startsWith("//---")) return ["TAIL",body.substr(5).trim()];
-            else return null;
-        } else return null;
-    },
-    "html": (body: string, type: string):string|string[] => {
-        if(type == "HEAD") return "<!--#!"+body+"-->";
-        else if (type == "TAIL") return "<!--#!---"+body+"-->";
-        else if (body.startsWith("<!--")) {
-            if(body.startsWith("<!--#!")){
-                if(body.startsWith("<!--#!---")){
-                    let i = body.indexOf("-->");
-                    return ["TAIL",body.substr(9,i-9).trim()];
-                }
-                let i = body.indexOf("-->");
-                return ["HEAD",body.substr(6,i-6).trim()];
-            }
-            else return null;
-        } else return null;
-    },
-};
-
-function parsecommand(command: string, jobname: string): 
-    {mapkey: string, template: string}
-{
-    let parts = command.split(' ');
-    let mapkey = jobname + "-" + parts[1];
-    let template = parts[2];
-    return {mapkey, template};
-}
+import { commentStyleParser } from "../utils/commentStyleParser";
+import { parsecommand } from "../utils/parsecommand";
+import { templateParser } from "../utils/templateParser";
 
 function generateBody(job: RubahJobs, multi: boolean, mapkey: string, template: string, commentStyle: string, left: string): string[]{
     let rawbody = `generated-line${multi?'-multi':''} ${mapkey} DO NOT EDIT`;

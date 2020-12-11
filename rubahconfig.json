@@ -6,6 +6,17 @@
             "location": "package.json"
         },
         {
+            "name": "index",
+            "command": "line_read",
+            "location": "src/index.ts"
+        },
+        {
+            "name": "maincommands",
+            "command": "map_to_file_content",
+            "input": "index_maincommand",
+            "location": "docs/commands/$x.md"
+        },
+        {
             "name": "readme",
             "command": "line_write",
             "location": "readme.md",
@@ -14,6 +25,6 @@
     ],
 
     "mappingfile": "rubahmapping.json",
-    "helpers": ["src/helpers/common","src/helpers/markdown"],
-    "commands": ["src/commands/load_json","src/commands/line_write"]
+    "helpers": ["src/helpers/common","src/helpers/markdown","src/helpers/textparser"],
+    "commands": ["src/commands/load_json","src/commands/line_write","src/commands/line_read"]
 }

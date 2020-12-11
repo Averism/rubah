@@ -1,14 +1,14 @@
-<!--#!generated-line readme-title DO NOT EDIT-->
+<!--#!generated-line readme_title DO NOT EDIT-->
 # rubah
-<!--#!---readme-title-->
+<!--#!---readme_title-->
 
-<!--#!generated-line readme-desc DO NOT EDIT-->
+<!--#!generated-line readme_desc DO NOT EDIT-->
 Template preprocessor module for avermodule
-<!--#!---readme-desc-->
+<!--#!---readme_desc-->
 
-<!--#!generated-line readme-ver DO NOT EDIT-->
+<!--#!generated-line readme_ver DO NOT EDIT-->
 0.1.0
-<!--#!---readme-ver-->
+<!--#!---readme_ver-->
 
 ---
 
@@ -16,7 +16,7 @@ lorem ipsum dolor sit amet
 
 ---
 
-<!--#!generated-line readme-copyright DO NOT EDIT-->
+<!--#!generated-line readme_copyright DO NOT EDIT-->
 ### rubah -- Template preprocessor module for avermodule
 
 Copyright (C) 2020 Averman
@@ -33,4 +33,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
-<!--#!---readme-copyright-->
+<!--#!---readme_copyright-->

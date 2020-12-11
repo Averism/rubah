@@ -54,7 +54,7 @@ export class Rubah implements RubahInterface {
                 console.error(`unknown handler ${handler} with params ${commands}`);
             }
         }
-        console.log("rubah finished")
+        console.log("rubah finished", this.data)
         return Promise.resolve(0);
     }
     async revert(): Promise<number> {
