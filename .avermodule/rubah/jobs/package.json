@@ -1,0 +1,4 @@
+{
+    "command": "load_json",
+    "location": "package.json"
+}

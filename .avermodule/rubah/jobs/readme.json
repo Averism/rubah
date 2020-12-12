@@ -1,0 +1,6 @@
+{
+    "command": "line_write",
+    "location": "readme.md",
+    "commentStyle": "html",
+    "dependson": ["package","index"]
+}

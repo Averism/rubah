@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import glob from "glob";
 import { RubahInterface } from "./interfaces/Rubah";
 import { RubahJobs } from "./models/RubahJobs";
 import { RubahOptions } from "./models/RubahOptions";
@@ -15,23 +16,42 @@ export class Rubah implements RubahInterface {
         if(fs.existsSync(config.mappingfile)){
             this.state = JSON.parse(fs.readFileSync(config.mappingfile).toString());
         }
+        let temp;
         if(config.helpers){
-            for(let helper of config.helpers){
-                let temp;
-                if(helper.startsWith('./')) temp = require('./'+path.join(relative,helper.substr(2)));
-                else temp = require(path.join(relative,helper));
-                for(let key of Object.keys(temp)){
-                    this.helpers[key] = temp[key];
+            for(let helperPath of config.helpers){
+                if(helperPath.startsWith('./')){
+                    let helpers = glob.sync(helperPath)
+                    for(let helper of helpers){
+                        if(helper.startsWith('./')) temp = require('./'+path.join( relative ,helper.substr(2)));
+                        else temp = require(path.join(relative,helper));
+                        for(let key of Object.keys(temp)){
+                            this.helpers[key] = temp[key];
+                        }
+                    }
+                }else {
+                    temp = require(helperPath);
+                    for(let key of Object.keys(temp)){
+                        this.helpers[key] = temp[key];
+                    }   
                 }
             }
         }
         if(config.commands){
-            for(let command of config.commands){
-                let temp;
-                if(command.startsWith('./')) temp = require('./'+path.join(relative,command.substr(2)));
-                else temp = require(path.join(relative,command));
-                for(let key of Object.keys(temp)){
-                    this.commands[key] = temp[key];
+            for(let commandPath of config.commands){
+                if(commandPath.startsWith('./')){
+                    let commands = glob.sync(commandPath);
+                    for(let command of commands){
+                        if(command.startsWith('./')) temp = require('./'+path.join(relative,command.substr(2)));
+                        else temp = require(path.join(relative,command));
+                        for(let key of Object.keys(temp)){
+                            this.commands[key] = temp[key];
+                        }
+                    }
+                }else{
+                    temp = require(path.join(relative,commandPath));
+                    for(let key of Object.keys(temp)){
+                        this.commands[key] = temp[key];
+                    }
                 }
             }
         }

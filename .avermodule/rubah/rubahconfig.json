@@ -1,0 +1,6 @@
+{
+    "mappingfile": ".avermodule/rubah/rubahmapping.json",
+    "helpers": ["./src/helpers/*.ts"],
+    "commands": ["./src/commands/*.ts"],
+    "jobpaths": [".avermodule/rubah/jobs/*.json"]
+}

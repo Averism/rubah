@@ -1,9 +1,10 @@
 import { RubahJobs } from "./RubahJobs";
 
 export class RubahOptions {
-    jobs: RubahJobs[];
+    jobs: RubahJobs[] = [];
     mappingfile?: string;
     newline?: string;
     helpers?: string[];
     commands?: string[];
+    jobpaths?: string[];
 }

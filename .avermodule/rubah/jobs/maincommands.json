@@ -1,0 +1,6 @@
+{
+    "command": "map_to_file_content",
+    "input": "index_maincommand",
+    "location": "docs/commands/$x.md",
+    "dependson": ["index"]
+}
