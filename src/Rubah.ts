@@ -37,28 +37,38 @@ export class Rubah implements RubahInterface {
         }
     }
     async generate(): Promise<number> {
-        console.log(`found ${this.config.jobs.length} job${this.config.jobs.length>1?'s':''} executing...`);
+        console.log(`found ${this.config.jobs.length} job${this.config.jobs.length>1?'s':''} generating...`);
         for(let job of this.config.jobs){
-            console.log(`executing job ${job.name}`);
-            let commands: string[] = job.command.split(" ");
-            let handler = commands.shift();
-            if(this.commands[handler]){
-                job.rubah = this;
-                try{
-                    let temp:{ key: string; value: any; }[] = await this.commands[handler](job, commands);
-                    for(let o of temp){
-                        this.data[o.key] = o.value;
-                    }
-                }catch(e) {console.error(e)}
-            } else {
-                console.error(`unknown handler ${handler} with params ${commands}`);
-            }
+            job.isGenerate = true;
+            await this.doJob(job);
         }
-        console.log("rubah finished", this.data)
+        console.log("rubah generate finished")
         return Promise.resolve(0);
     }
     async revert(): Promise<number> {
-        return;
+        console.log(`found ${this.config.jobs.length} job${this.config.jobs.length>1?'s':''} reverting...`);
+        for(let job of this.config.jobs){
+            job.isGenerate = false;
+            await this.doJob(job);
+        }
+        console.log("rubah revert finished")
+        return Promise.resolve(0);
+    }
+    private async doJob(job: RubahJobs){
+        console.log(`executing job ${job.name}`);
+        let commands: string[] = job.command.split(" ");
+        let handler = commands.shift();
+        if(this.commands[handler]){
+            job.rubah = this;
+            try{
+                let temp:{ key: string; value: any; }[] = await this.commands[handler](job, commands);
+                for(let o of temp){
+                    this.data[o.key] = o.value;
+                }
+            }catch(e) {console.error(e)}
+        } else {
+            console.error(`\u001b[41mERROR: unknown handler ${handler} with params ${commands}\u001b[0m`);
+        }
     }
     async writeMapping(): Promise<number> {
         let mf = this.config.mappingfile;

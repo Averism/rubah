@@ -44,9 +44,11 @@ export async function line_write (job: RubahJobs, params: string[]): Promise<{ k
             if(parsed[1].startsWith('generated-line-multi'))
                 multi = true;
             let mapkey = parsed[1].split(' ')[1].trim();
+            let name = mapkey.split('_').slice(1).join('_');
             let template = job.rubah.state[mapkey];
             let body : string[] = generateBody(job,multi,mapkey,template,commentStyle,left)
-            res = res.concat(body);
+            res = job.isGenerate?res.concat(body):
+                res.concat(commentStyleParser[commentStyle](['line-writer'+(multi?'-multi':''),name,template].join(" "),"HEAD"));
             mode = mapkey;
         } else if (mode!=null && parsed && parsed[0] == "TAIL" && parsed[1].trim()==mode) {
             mode = null;
