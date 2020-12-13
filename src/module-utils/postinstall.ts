@@ -12,10 +12,12 @@ packageJson.averModule.rubah = {
 
 packageJson.scripts.preprocess = "rubah generate";
 packageJson.scripts.revertTemplate = "rubah revert";
+fs.writeFileSync(path.join(cwd,"package.json"),JSON.stringify(packageJson,null,2));
 
 //initializing rubah folder
 if(!fs.existsSync(path.join(cwd, ".avermodule"))) fs.mkdirSync(path.join(cwd, ".avermodule"));
 if(!fs.existsSync(path.join(cwd, ".avermodule", "rubah"))) fs.mkdirSync(path.join(cwd, ".avermodule", "rubah"));
+
 
 //load config
 const initialConfig = {
