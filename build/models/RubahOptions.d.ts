@@ -5,4 +5,5 @@ export declare class RubahOptions {
     newline?: string;
     helpers?: string[];
     commands?: string[];
+    jobpaths?: string[];
 }

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Rubah = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const glob_1 = __importDefault(require("glob"));
 const relative = path_1.default.relative(__dirname, process.cwd());
 class Rubah {
     constructor(config) {
@@ -29,27 +30,48 @@ class Rubah {
         if (fs_1.default.existsSync(config.mappingfile)) {
             this.state = JSON.parse(fs_1.default.readFileSync(config.mappingfile).toString());
         }
+        let temp;
         if (config.helpers) {
-            for (let helper of config.helpers) {
-                let temp;
-                if (helper.startsWith('./'))
-                    temp = require('./' + path_1.default.join(relative, helper.substr(2)));
-                else
-                    temp = require(path_1.default.join(relative, helper));
-                for (let key of Object.keys(temp)) {
-                    this.helpers[key] = temp[key];
+            for (let helperPath of config.helpers) {
+                if (helperPath.startsWith('./')) {
+                    let helpers = glob_1.default.sync(helperPath);
+                    for (let helper of helpers) {
+                        if (helper.startsWith('./'))
+                            temp = require('./' + path_1.default.join(relative, helper.substr(2)));
+                        else
+                            temp = require(path_1.default.join(relative, helper));
+                        for (let key of Object.keys(temp)) {
+                            this.helpers[key] = temp[key];
+                        }
+                    }
+                }
+                else {
+                    temp = require(helperPath);
+                    for (let key of Object.keys(temp)) {
+                        this.helpers[key] = temp[key];
+                    }
                 }
             }
         }
         if (config.commands) {
-            for (let command of config.commands) {
-                let temp;
-                if (command.startsWith('./'))
-                    temp = require('./' + path_1.default.join(relative, command.substr(2)));
-                else
-                    temp = require(path_1.default.join(relative, command));
-                for (let key of Object.keys(temp)) {
-                    this.commands[key] = temp[key];
+            for (let commandPath of config.commands) {
+                if (commandPath.startsWith('./')) {
+                    let commands = glob_1.default.sync(commandPath);
+                    for (let command of commands) {
+                        if (command.startsWith('./'))
+                            temp = require('./' + path_1.default.join(relative, command.substr(2)));
+                        else
+                            temp = require(path_1.default.join(relative, command));
+                        for (let key of Object.keys(temp)) {
+                            this.commands[key] = temp[key];
+                        }
+                    }
+                }
+                else {
+                    temp = require(path_1.default.join(relative, commandPath));
+                    for (let key of Object.keys(temp)) {
+                        this.commands[key] = temp[key];
+                    }
                 }
             }
         }

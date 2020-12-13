@@ -49,7 +49,7 @@ function getJobs(config: RubahOptions){
 
 export default async function main(mode: string):Promise<number>{
     let config: RubahOptions = new RubahOptions();
-    config = Object.assign(config, JSON.parse(fs.readFileSync("rubahconfig.json").toString()));
+    config = Object.assign(config, JSON.parse(fs.readFileSync(".avermodule/rubah/rubahconfig.json").toString()));
     let rubah = new Rubah(config);
     config.jobs = getJobs(config);
     switch(mode){
