@@ -15,7 +15,7 @@ packageJson.scripts.revertTemplate = "rubah revert";
 
 //initializing rubah folder
 if(!fs.existsSync(path.join(cwd, ".avermodule"))) fs.mkdirSync(path.join(cwd, ".avermodule"));
-if(!fs.existsSync(path.join(cwd, "rubah"))) fs.mkdirSync(path.join(cwd, "rubah"));
+if(!fs.existsSync(path.join(cwd, ".avermodule", "rubah"))) fs.mkdirSync(path.join(cwd, ".avermodule", "rubah"));
 
 //load config
 const initialConfig = {
