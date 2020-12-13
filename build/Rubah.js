@@ -68,7 +68,7 @@ class Rubah {
                     }
                 }
                 else {
-                    temp = require(path_1.default.join(relative, commandPath));
+                    temp = require(commandPath);
                     for (let key of Object.keys(temp)) {
                         this.commands[key] = temp[key];
                     }

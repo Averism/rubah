@@ -16,11 +16,12 @@ packageJson.averModule.rubah = {
 };
 packageJson.scripts.preprocess = "rubah generate";
 packageJson.scripts.revertTemplate = "rubah revert";
+fs_1.default.writeFileSync(path_1.default.join(cwd, "package.json"), JSON.stringify(packageJson, null, 2));
 //initializing rubah folder
 if (!fs_1.default.existsSync(path_1.default.join(cwd, ".avermodule")))
     fs_1.default.mkdirSync(path_1.default.join(cwd, ".avermodule"));
-if (!fs_1.default.existsSync(path_1.default.join(cwd, "rubah")))
-    fs_1.default.mkdirSync(path_1.default.join(cwd, "rubah"));
+if (!fs_1.default.existsSync(path_1.default.join(cwd, ".avermodule", "rubah")))
+    fs_1.default.mkdirSync(path_1.default.join(cwd, ".avermodule", "rubah"));
 //load config
 const initialConfig = {
     "mappingfile": ".avermodule/rubah/rubahmapping.json",

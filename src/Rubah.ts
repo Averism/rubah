@@ -48,7 +48,7 @@ export class Rubah implements RubahInterface {
                         }
                     }
                 }else{
-                    temp = require(path.join(relative,commandPath));
+                    temp = require(commandPath);
                     for(let key of Object.keys(temp)){
                         this.commands[key] = temp[key];
                     }
