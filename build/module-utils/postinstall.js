@@ -11,9 +11,7 @@ let packageJson = JSON.parse(fs_1.default.readFileSync(path_1.default.join(cwd, 
 if (!packageJson.averModule)
     packageJson.averModule = {};
 packageJson.averModule.rubah = {
-    reconfigure: "rubah reconfigure",
     config: ".avermodule/rubah/rubahconfig.json",
-    priority: 1,
     firstrun: true
 };
 packageJson.scripts.preprocess = "rubah generate";
