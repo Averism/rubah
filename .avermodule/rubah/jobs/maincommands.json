@@ -1,6 +1,5 @@
 {
-    "command": "map_to_file_content",
-    "input": "index_maincommand",
-    "location": "docs/commands/$x.md",
+    "command": "template_file source index_maincommand docs/maincommand/${value}.md",
+    "location": "resource/templates/maincommand_docs.md",
     "dependson": ["index"]
 }
