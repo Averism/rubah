@@ -4,6 +4,7 @@ import glob from "glob";
 import { RubahInterface } from "./interfaces/Rubah";
 import { RubahJobs } from "./models/RubahJobs";
 import { RubahOptions } from "./models/RubahOptions";
+import { HandlerFunc } from "./utils/templateParser";
 
 const relative = path.relative(__dirname, process.cwd());
 
@@ -71,7 +72,6 @@ export class Rubah implements RubahInterface {
             job.isGenerate = false;
             await this.doJob(job);
         }
-        console.log("rubah revert finished")
         return Promise.resolve(0);
     }
     private async doJob(job: RubahJobs){
@@ -83,7 +83,14 @@ export class Rubah implements RubahInterface {
             try{
                 let temp:{ key: string; value: any; }[] = await this.commands[handler](job, commands);
                 for(let o of temp){
-                    this.data[o.key] = o.value;
+                    let keys = o.key.split(".");
+                    let current = this.data;
+                    for(let i=0; i<keys.length-1; i++){
+                        let k = keys[i];
+                        if(typeof current[k] == "undefined") current[k] = {}
+                        current = current[k];
+                    }
+                    current[keys[keys.length-1]] = o.value;
                 }
             }catch(e) {console.error(e)}
         } else {
