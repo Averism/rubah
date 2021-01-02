@@ -9,5 +9,6 @@ export declare class RubahJobs {
     filter?: string;
     newline?: string;
     commentStyle?: string;
+    data?: any;
     rubah: RubahInterface;
 }

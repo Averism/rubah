@@ -12,7 +12,13 @@ export interface RubahInterface {
         }[]>;
     };
     config: RubahOptions;
+    /**
+     * the property to hold state: that is value in original template but replaced by generated content
+     */
     state: any;
+    /**
+     * the current data held from previous read job in rubah data repository
+     */
     data: any;
     helpers: {
         [key: string]: Function;
