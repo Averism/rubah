@@ -1,0 +1,5 @@
+{
+    "command": "glob load doc_maincommand",
+    "location": "docs/maincommand/*.md",
+    "dependson": ["maincommands"]
+}
