@@ -1,6 +1,7 @@
 {
-  "readme_title": "mdselect(h1,package,name)",
-  "readme_desc": "select(package,description)",
-  "readme_ver": "select(package,version)",
-  "readme_copyright": "mdcopyright(package,2020)"
+  "readme_title": "mdformat(h1,select(@package.name))",
+  "readme_desc": "select(@package.description)",
+  "readme_ver": "mdformat(code,select(@package.version))",
+  "readme_copyright": "mdcopyright(@package,2020)",
+  "readme_maincommand": "values(select(@doc_maincommand))"
 }

@@ -7,10 +7,9 @@ word = word.concat([
 ])
 
 
-export function getwordbetween(texts: string[], start: string, end: string):string[] {
-    return texts
-    .map(x=>x.split(end)[0].split(start)[1])
-    .filter(x=>x)
-    .map(x=>x.split('').filter(x=>word.indexOf(x)>-1).join(''))
-    .filter(x=>x&&x.length>0);
+export function getwordbetween(text: string, start: string, end: string):string {
+    let s = text.split(end)[0].split(start)[1];
+    if(typeof s == "undefined") return s;
+    s = s.split('').filter(x=>word.indexOf(x)>-1).join('');
+    return s;
 }

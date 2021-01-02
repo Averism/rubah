@@ -1,11 +1,16 @@
 const mdformatter: {[key: string]:(body: string)=>string} = {
-    h1: (body:string)=>"# "+body
+    h1: (body:string)=>"# "+body,
+    code: (body: string)=>"``` "+body+"```"
 }
 
 export function mdselect(format: string, obj: any, ...paths: string[]):string[] {
     let current = obj;
     for(let path of paths) current = current[path];
     return [mdformatter[format](current)];
+}
+
+export function mdformat(format: string, value: string): string[] {
+    return [mdformatter[format](value)];
 }
 
 export function mdcopyright(pkg: any, year: number): string[] {

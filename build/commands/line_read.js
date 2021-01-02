@@ -34,14 +34,19 @@ function line_read(job, params) {
             let parsed = commentStyleParser_1.commentStyleParser[commentStyle](line.trim(), "PARSE");
             if (parsed && parsed[0] == "HEAD" && parsed[1].startsWith('line-read')) {
                 let { key, mapkey, template } = parsecommand_1.parsecommand(parsed[1], job.name);
-                let { handle, params } = templateParser_1.templateParser(template);
-                state = { key, handle, params, mapkey };
+                if (typeof template == "string" && template.length > 3) {
+                    let { handle, params } = templateParser_1.templateParser(template);
+                    state = { key, handle, params, mapkey };
+                }
+                else {
+                    state = { key, mapkey };
+                }
                 chunk = [];
             }
             else if (parsed && parsed[0] == "TAIL" && state && state.key && parsed[1].trim() == state.key) {
                 let value = chunk;
-                if (job.rubah.helpers[state.handle]) {
-                    value = job.rubah.helpers[state.handle](value, ...state.params);
+                if (state.handle && job.rubah.helpers[state.handle]) {
+                    value = templateParser_1.callHandler(job.rubah, state.handle, value, ...state.params);
                 }
                 res.push({ key: state.mapkey, value });
                 state = null;

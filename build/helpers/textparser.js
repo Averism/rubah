@@ -8,11 +8,11 @@ word = word.concat(word.map(x => x.toLowerCase()));
 word = word.concat([
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ]);
-function getwordbetween(texts, start, end) {
-    return texts
-        .map(x => x.split(end)[0].split(start)[1])
-        .filter(x => x)
-        .map(x => x.split('').filter(x => word.indexOf(x) > -1).join(''))
-        .filter(x => x && x.length > 0);
+function getwordbetween(text, start, end) {
+    let s = text.split(end)[0].split(start)[1];
+    if (typeof s == "undefined")
+        return s;
+    s = s.split('').filter(x => word.indexOf(x) > -1).join('');
+    return s;
 }
 exports.getwordbetween = getwordbetween;

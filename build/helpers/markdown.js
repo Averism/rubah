@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mdcopyright = exports.mdselect = void 0;
 const mdformatter = {
-    h1: (body) => "# " + body
+    h1: (body) => "# " + body,
+    code: (body) => "``` " + body + "```"
 };
 function mdselect(format, obj, ...paths) {
     let current = obj;

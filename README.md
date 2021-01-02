@@ -7,12 +7,33 @@ Template preprocessor module for avermodule
 <!--#!---readme_desc-->
 
 <!--#!generated-line readme_ver DO NOT EDIT-->
-0.1.0
+``` 0.1.0```
 <!--#!---readme_ver-->
 
 ---
 
-lorem ipsum dolor sit amet
+## Commands:
+
+<!--#!generated-line-multi readme_maincommand DO NOT EDIT-->
+commands:
+
+```npm run start generate```
+
+description:
+
+rubah run all job and generate file(s) if needed. All generating job will change it's template to the generated marker.
+
+
+commands:
+
+```npm run start revert```
+
+description:
+
+Revert all generated content by rubah generate command to it's initial marker/shebang tag.
+
+
+<!--#!---readme_maincommand-->
 
 ---
 

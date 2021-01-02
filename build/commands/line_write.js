@@ -22,16 +22,17 @@ function generateBody(job, multi, mapkey, template, commentStyle, left) {
     let rawbody = `generated-line${multi ? '-multi' : ''} ${mapkey} DO NOT EDIT`;
     let body = [commentStyleParser_1.commentStyleParser[commentStyle](rawbody, "HEAD")];
     let { handle, params } = templateParser_1.templateParser(template);
-    if (job.rubah.helpers[handle]) {
-        let p;
-        if (multi)
-            p = job.rubah.iterate(params);
-        else
-            p = [params.map((x) => job.rubah.data[x] || x)];
-        body = body.concat(p.map(x => job.rubah.helpers[handle](...x)).reduce((p, c) => p.concat(c), []));
-    }
+    // if(job.rubah.helpers[handle]){
+    //     let p: any[][];
+    //     if(multi) p = job.rubah.iterate(params);
+    //     else p = [params.map((x:any)=>job.rubah.data[x] || x)];
+    //     body = body.concat( p.map(x=>job.rubah.helpers[handle](...x) ).reduce((p,c)=>p.concat(c),[]) );
+    // }else throw `unknown helper ${handle} with params ${params}`;
+    let temp = templateParser_1.callHandler(job.rubah, handle, ...params);
+    if (Array.isArray(temp))
+        body = body.concat(temp);
     else
-        throw `unknown helper ${handle} with params ${params}`;
+        body.push(temp);
     body.push(commentStyleParser_1.commentStyleParser[commentStyle](mapkey, "TAIL"));
     body = body.map(x => left + x);
     return body;

@@ -1,1 +1,1 @@
-export declare function getwordbetween(texts: string[], start: string, end: string): string[];
+export declare function getwordbetween(text: string, start: string, end: string): string;

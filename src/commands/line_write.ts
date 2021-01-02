@@ -3,18 +3,21 @@ import fs from 'fs';
 import { RubahJobs } from "../models/RubahJobs";
 import { commentStyleParser } from "../utils/commentStyleParser";
 import { parsecommand } from "../utils/parsecommand";
-import { templateParser } from "../utils/templateParser";
+import { callHandler, templateParser } from "../utils/templateParser";
 
 function generateBody(job: RubahJobs, multi: boolean, mapkey: string, template: string, commentStyle: string, left: string): string[]{
     let rawbody = `generated-line${multi?'-multi':''} ${mapkey} DO NOT EDIT`;
     let body : string[] = [commentStyleParser[commentStyle](rawbody,"HEAD") as string];
     let {handle, params} = templateParser(template);
-    if(job.rubah.helpers[handle]){
-        let p: any[][];
-        if(multi) p = job.rubah.iterate(params);
-        else p = [params.map((x:any)=>job.rubah.data[x] || x)];
-        body = body.concat( p.map(x=>job.rubah.helpers[handle](...x) ).reduce((p,c)=>p.concat(c),[]) );
-    }else throw `unknown helper ${handle} with params ${params}`;
+    // if(job.rubah.helpers[handle]){
+    //     let p: any[][];
+    //     if(multi) p = job.rubah.iterate(params);
+    //     else p = [params.map((x:any)=>job.rubah.data[x] || x)];
+    //     body = body.concat( p.map(x=>job.rubah.helpers[handle](...x) ).reduce((p,c)=>p.concat(c),[]) );
+    // }else throw `unknown helper ${handle} with params ${params}`;
+    let temp = callHandler(job.rubah, handle, ...params)
+    if(Array.isArray(temp)) body = body.concat(temp);
+    else body.push(temp);
     body.push(commentStyleParser[commentStyle](mapkey,"TAIL") as string);
     body = body.map(x=>left+x);
     return body;
